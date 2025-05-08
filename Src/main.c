@@ -9,10 +9,7 @@ int main(void){
 	// 1. enable clock for GPIOD peripheral in AHB1ENR
 	// looking at the RCC AHB1ENR peripheral clock enable register we see we must only set the fourth bit (index 3!!)
 	// the mask to change the fourth bit is 0x00000008
-
-	uint32_t changePinClkCtrlReg = *pClockControlRegister; // read operation - dereferencing
-	changePinClkCtrlReg = changePinClkCtrlReg | 0x08; // modify
-	*pClockControlRegister = changePinClkCtrlReg; // write - dereferencing
+	*pClockControlRegister |= 0x08; // dereference and set
 	// RCC > AHB1ENR > GPIODEN
 
 	// 2. configure the GPIO mode of the IO pin as output
