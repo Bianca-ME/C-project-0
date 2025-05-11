@@ -17,14 +17,17 @@ int main(void){
 	// a. CLEAR bits on position 24 and 25
 	*pPortDmodeRegister &= ~( 3 << 24 );
 	// shifts binary 3 (0011) to the left on indexes 24 and 25, then performs NOT operator, dereferences and performs AND operator
-	// b. SET 01 on position 24 and 25
+	// b. SET 01 (output) on position 24 and 25
 	*pPortDmodeRegister |= ( 1 << 24 );
 	// GPIOD > MODER > MODER12
 
-	// 3. set 12th bit of the output data register to make I/O pin 12 as HIGH
-	// the mask is 0x00001000
-	*pGPIOoutputDataRegister |= ( 1 << 12 );
+	// 3. toggle pin 12 as HIGH and LOW in a loop using delays
+	// the mask for pin 12 is 0x00001000 to set it HIGH
+	while(1){
+		*pGPIOoutputDataRegister |= ( 1 << 12 );	// set pin 12 to HIGH
+		for(uint32_t i = 0; i < 300000; i++);		// delay
+		*pGPIOoutputDataRegister &= ~( 1 << 12 );	// set pin 12 to LOW
+		for(uint32_t i = 0; i < 300000; i++);		// delay
+	}
 	// GPIOD > ODR > ODR12
-
-	while(1);
 }
